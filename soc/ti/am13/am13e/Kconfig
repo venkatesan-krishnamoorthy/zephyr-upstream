@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-config SOC_AM13E23019
+config SOC_SERIES_AM13E
 	select ARM
 	select ARMV8_M_DSP
 	select BUILD_OUTPUT_BIN

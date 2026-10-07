@@ -14,8 +14,13 @@ config SOC_AM13E23019
 	bool
 	select SOC_SERIES_AM13E
 
+config SOC_AM13E23219
+	bool
+	select SOC_SERIES_AM13E
+
 config SOC_SERIES
 	default "am13e" if SOC_SERIES_AM13E
 
 config SOC
 	default "am13e23019" if SOC_AM13E23019
+	default "am13e23219" if SOC_AM13E23219

@@ -1,0 +1,140 @@
+# Copyright (c) 2026 Texas Instruments Incorporated
+# SPDX-License-Identifier: Apache-2.0
+
+description: |
+  Texas Instruments AM13 EtherCAT Subsystem (ESCSS)
+
+  The ESCSS wraps the Beckhoff EtherCAT Slave Controller (ESC). The first
+  register region is the ESCSS wrapper (with its configuration registers at
+  offset 0x200), the second is the ESC PDI address space (ESC registers at
+  0x0000-0x0FFF followed by the process data RAM).
+
+  Example:
+
+    &escss {
+        pinctrl-0 = <...>;
+        pinctrl-names = "default";
+        ti,phy-address = <0>;
+        ti,latch0-source = <TI_ESCSS_LATCH_PIN_LATCH0>;
+        status = "okay";
+    };
+
+compatible: "ti,am13-escss"
+
+include: [base.yaml, pinctrl-device.yaml]
+
+properties:
+  reg:
+    required: true
+
+  reg-names:
+    required: true
+
+  interrupts:
+    required: true
+
+  interrupt-names:
+    required: true
+
+  ti,clk-div:
+    type: int
+    default: 2
+    enum: [1, 2, 3, 4, 5, 6, 7, 8]
+    description: |
+      MCLK divider for the 100 MHz EtherCAT core clock. The default of 2 is
+      correct for a 200 MHz MCLK.
+
+  ti,phy-port-count:
+    type: int
+    default: 2
+    enum: [1, 2]
+    description: Number of MII ports in operation.
+
+  ti,tx-clk-auto-comp-disable:
+    type: boolean
+    description: Disable TX_CLK I/O pad auto-compensation.
+
+  ti,eeprom-i2c-pads-disable:
+    type: boolean
+    description: |
+      Do not connect the ESC EEPROM I2C interface to the I/O pads. Use this
+      when the SII EEPROM is emulated through the internal I2C loopback.
+
+  ti,eeprom-size-less-than-16k:
+    type: boolean
+    description: The SII EEPROM is smaller than 16 Kbit.
+
+  ti,i2c-loopback:
+    type: boolean
+    description: |
+      Loop the ESC EEPROM I2C master back to an internal I2C target, so the
+      SII EEPROM can be emulated by software.
+
+  ti,phy-address:
+    type: int
+    default: 0
+    description: PHY address offset used for MII management (0-31).
+
+  ti,tx0-shift:
+    type: int
+    default: 0
+    enum: [0, 1, 2, 3]
+    description: TX shift configuration for MII port 0.
+
+  ti,tx1-shift:
+    type: int
+    default: 0
+    enum: [0, 1, 2, 3]
+    description: TX shift configuration for MII port 1.
+
+  ti,gpin-pad-mask:
+    type: int
+    default: 0
+    description: |
+      Bitmask of GPI[3:0] pins connected to I/O pads. GPI pins not in the
+      mask are driven from the GPIN_DAT register.
+
+  ti,wait-states:
+    type: int
+    default: 0
+    description: Minimum PDI bus wait states (0-127).
+
+  ti,pdi-timeout:
+    type: int
+    default: 0
+    description: |
+      PDI bus access timeout count (1-4095). 0 disables timeout detection.
+
+  ti,latch0-source:
+    type: int
+    default: 0
+    description: |
+      LATCH0 input source, one of TI_ESCSS_LATCH_* from
+      <zephyr/dt-bindings/misc/ti-am13-escss.h>.
+
+  ti,latch1-source:
+    type: int
+    default: 1
+    description: |
+      LATCH1 input source, one of TI_ESCSS_LATCH_* from
+      <zephyr/dt-bindings/misc/ti-am13-escss.h>.
+
+  ti,reset-out-dest:
+    type: int
+    default: 0
+    description: |
+      Destinations of the EtherCAT ResetOut signal, a bitwise OR of
+      TI_ESCSS_RESET_DEST_* from <zephyr/dt-bindings/misc/ti-am13-escss.h>.
+
+  ti,eeprom-load-timeout-ms:
+    type: int
+    default: 100
+    description: |
+      Time to wait at init for the ESC to load the SII EEPROM. 0 skips the
+      wait and the memory initialization that follows it.
+
+  ti,no-config-lock:
+    type: boolean
+    description: |
+      Do not lock the I/O configuration registers after init. By default
+      they are locked until the next EtherCAT subsystem reset.

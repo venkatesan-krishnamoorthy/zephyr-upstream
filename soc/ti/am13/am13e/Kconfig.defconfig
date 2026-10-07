@@ -7,6 +7,7 @@
 if SOC_SERIES_AM13E
 
 config NUM_IRQS
+	default 76 if SOC_AM13E23219
 	default 48
 
 config SYS_CLOCK_HW_CYCLES_PER_SEC

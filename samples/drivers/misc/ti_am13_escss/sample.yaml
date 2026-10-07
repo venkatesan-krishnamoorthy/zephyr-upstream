@@ -1,0 +1,15 @@
+# Copyright (c) 2026 Texas Instruments Incorporated
+# SPDX-License-Identifier: Apache-2.0
+
+sample:
+  name: TI AM13 ESCSS sample
+  description: Bring up the AM13 EtherCAT subsystem and report ESC events.
+tests:
+  sample.drivers.misc.ti_am13_escss:
+    tags: misc
+    filter: dt_compat_enabled("ti,am13-escss")
+    harness: console
+    harness_config:
+      type: one_line
+      regex:
+        - "ESC type 0x[0-9a-f]+ revision 0x[0-9a-f]+"

@@ -6132,8 +6132,14 @@ TI AM13 Platforms:
     - s-m33r
   files:
     - boards/ti/*am13*/
+    - drivers/misc/ti_am13_escss/
     - dts/arm/ti/am13*/
+    - dts/bindings/misc/ti,am13-escss.yaml
+    - include/zephyr/drivers/misc/ti_am13_escss/
+    - include/zephyr/dt-bindings/misc/ti-am13-escss.h
+    - samples/drivers/misc/ti_am13_escss/
     - soc/ti/am13*/
+    - tests/drivers/misc/ti_am13_escss/
   labels:
     - "platform: TI AM13"
 
