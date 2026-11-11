@@ -21,3 +21,13 @@ config AM13E_SRAM_UNIFIED
 	help
 	  Switch SRAM3 from its C-AHB code-region alias to the S-AHB data-region
 	  path so that all four 32 KB SRAM banks appear as one contiguous region.
+
+config AM13E_FLASH_CACHE
+	bool "Enable the flash read interface cache"
+	depends on ARCH_HAS_RAMFUNC_SUPPORT
+	help
+	  Enable the cache of the flash read interface (FRI) for the MAIN flash
+	  region, for both code fetches and data reads. It is disabled after
+	  reset, so without it every access pays the full flash read latency.
+	  The register write is done from RAM, as required by the TRM procedure
+	  for changing the FRI registers.
